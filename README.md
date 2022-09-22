@@ -117,19 +117,70 @@ cases. For more information on 500-class codes, check out the
 
 ***
 
-## Exception Handling in Flask
+## Error Handling in Flask
 
-.
+When an error occurs in the runtime of a Flask application, the corresponding
+status code will be returned to the client. As we've seen in previous lessons,
+you can also easily set the status code in the construction of a response: it is
+the optional second argument of the `make_response()` function. When one of
+these errors takes place, it is most useful to return a message specific to the
+application. This is most easily carried out through registering **error
+handlers**.
 
-### Custom Error Messages
+### Registering Error Handlers
 
-.
+Similarly to how flask registers routes, error handlers are registered through
+use of the `@app.errorhandler()` decorator. Responses are constructed the same
+as with any other view, either as comma-separated body, status code, headers or
+an object created with `make_response()`. (The latter is preferred.)
+
+Let's take a look at a handler for 404s:
+
+```py
+# example
+from werkzeug.exceptions import NotFound
+
+...
+
+@app.errorhandler(NotFound)
+def handle_not_found(e):
+    
+    response = make_response(
+        "Not Found: The requested resource does not exist.",
+        404
+    )
+
+    return response
+```
+
+This will automatically capture any 404s detected by your Flask application
+and return the message provided in the response body. Flask can accomplish this
+because of the `werkzeug.exceptions.NotFound` class- this is the exception
+that is raised when a 404 is detected, and we have registered it to our handler.
+The two are now partnered for life!
+
+[`werkzeug.exceptions`][http_exc] includes all HTTP 400-class and 500-class
+codes, and you should think about which are relevant to your API as you build.
+An HTTP error should never go unhandled, or the client will not know how to
+proceed with their work.
+
+> **IMPORTANT: Make sure the messages in your response bodies are as specific as
+  possible! Imagine if Python applications only told you "something went wrong"
+  when there was an error in your code. You'd never figure it out!**
 
 ***
 
 ## Conclusion
 
-.
+Even the best APIs throw errors- even 500-class errors- sometimes. In order to
+avoid too many GitHub issues (or worse- people giving up on your API), it's
+important to register error handlers for every 400- or 500-class status code
+that might be returned by your API.
+
+Flask makes registration of error handlers very simple through use of the
+`app.errorhandler()` decorator. Feeding this the error code exception from
+`werkzeug.exceptions` and generating a descriptive response are all you need to
+do to elevate a simple API to a simple _production quality_ API.
 
 ***
 
@@ -139,6 +190,8 @@ cases. For more information on 500-class codes, check out the
 - [Client error responses - Mozilla][400]
 - [Server error responses - Mozilla][500]
 - [8. Errors and Exceptions - Python](https://docs.python.org/3.8/tutorial/errors.html)
+- [HTTP Exceptions - Pallets][http_exc]
 
 [400]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status#client_error_responses
 [500]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status#server_error_responses
+[http_exc]: https://werkzeug.palletsprojects.com/en/2.2.x/exceptions/
