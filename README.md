@@ -3,6 +3,8 @@
 ## Learning Goals
 
 - Build RESTful APIs that are easy to navigate and use in applications.
+- Determine the significant differences between 100-500 HTTP status codes.
+- Determine best practices in error handling in Flask.
 
 ***
 
@@ -74,6 +76,19 @@ Codes are grouped by the hundreds:
   mistake.
 - **500s** are server errors. They let the client know that something is
   temporarily out of order on your server.
+
+<details>
+  <summary>
+    <em>Would a 400- or 500-class code be more appropriate for a client
+        requesting a non-existent resource?</em>
+  </summary>
+
+  <h3>400</h3>
+  <p>The client has made a mistake here in requesting something that does not
+     exist. A 400-class status code- specifically 404- would be most appropriate
+     here.</p>
+</details>
+<br/>
 
 Let's explore the error codes a bit further:
 
@@ -166,6 +181,20 @@ proceed with their work.
 > **IMPORTANT: Make sure the messages in your response bodies are as specific as
   possible! Imagine if Python applications only told you "something went wrong"
   when there was an error in your code. You'd never figure it out!**
+
+<details>
+  <summary>
+    <em>Why is it considered a best practice to provide specific error messages
+        when building APIs?</em>
+  </summary>
+
+  <h3>The client needs to know exactly what went wrong.</h3>
+  <p>400-class codes denote that the client made a mistake, so they should
+     inform the client how to avoid that mistake in the future.</p>
+  <p>500-class codes denote that the server made a mistake, so the client should
+     be informed of this and asked to try again later.</p>
+</details>
+<br/>
 
 ***
 
