@@ -110,8 +110,7 @@ The most common 400-class response codes are:
 - **404 (Not Found):** as mentioned above, this means that the resource being
   sought after by the client does not exist.
 
-For more information on 400-class codes, check out the [Mozilla documentation][
-400].
+For more information on 400-class codes, check out the [Mozilla documentation][400].
 
 ### 500-Class Codes: Server Errors
 
