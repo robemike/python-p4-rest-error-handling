@@ -164,6 +164,9 @@ def handle_not_found(e):
     )
 
     return response
+
+app.register_error_handler(404, handle_not_found)
+
 ```
 
 This will automatically capture any 404s detected by your Flask application
